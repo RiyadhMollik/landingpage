@@ -92,7 +92,7 @@ export async function POST(request) {
       currency: 'BDT',
       intent: 'sale',
       merchantInvoiceNumber: `INV-${order.id}`,
-      callbackURL: `http://localhost:3000/api/payment/bkash/callback`,
+      callbackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/bkash/callback`,
       payerReference: "BDMouza"
     });
 
@@ -100,7 +100,7 @@ export async function POST(request) {
       `${bkashConfig.baseURL}/create`,
       {
         mode: "0011", // required
-        callbackURL: "http://localhost:3000/api/payment/bkash/callback",
+        callbackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/bkash/callback`,
         amount: Number(order.amount).toFixed(2), // must be string with 2 decimals
         currency: "BDT",
         intent: "sale",
