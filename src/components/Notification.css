@@ -1,0 +1,26 @@
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  min-width: 300px;
+  background: #19b37a;
+  color: #fff;
+  border-radius: 10px;
+  padding: 16px 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateX(-120%);
+  transition: transform 0.5s cubic-bezier(.4,0,.2,1), opacity 0.5s;
+  font-size: 18px;
+}
+
+.notification.slide-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification.slide-out {
+  opacity: 0;
+  transform: translateX(-120%);
+}
