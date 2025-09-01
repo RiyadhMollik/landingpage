@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bangladesh Maps Landing Page
+
+A Next.js application for selling digital maps of Bangladesh with bKash payment integration.
+
+## Features
+
+- Product display with pricing
+- Secure payment processing with bKash
+- Admin dashboard for order and product management
+- Order tracking and management
+- CSV export for orders
+
+## Tech Stack
+
+- Next.js 14
+- React
+- MySQL with Sequelize ORM
+- Tailwind CSS
+- bKash Payment Gateway
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ and npm
+- MySQL database
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env` file in the root directory with the following variables:
+
+```
+# Database Configuration
+DB_HOST=localhost
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
+DB_NAME=bangladesh_maps
+
+# JWT Secret
+JWT_SECRET=your_jwt_secret
+
+# bKash API Credentials
+BKASH_APP_KEY=your_bkash_app_key
+BKASH_APP_SECRET=your_bkash_app_secret
+BKASH_USERNAME=your_bkash_username
+BKASH_PASSWORD=your_bkash_password
+BKASH_BASE_URL=https://checkout.sandbox.bka.sh/v1.2.0-beta
+```
+
+4. Initialize the database:
+
+```bash
+node src/scripts/initDb.js
+```
+
+5. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Admin Access
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+After initializing the database, you can access the admin panel at `/admin/login` with the following credentials:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Username: admin
+- Password: admin123
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+- `/src/app` - Next.js application routes
+- `/src/components` - Reusable React components
+- `/src/models` - Sequelize database models
+- `/src/config` - Configuration files
+- `/src/middleware` - Authentication middleware
+- `/src/scripts` - Database initialization scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/api/auth` - Authentication endpoints
+- `/api/products` - Product management
+- `/api/orders` - Order management
+- `/api/payment/bkash` - bKash payment integration
 
-## Deploy on Vercel
+## Testing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To test the system:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Start the development server
+2. Visit the homepage and click on "Download Now"
+3. Fill out the purchase form and submit
+4. Complete the bKash payment flow
+5. Check the admin dashboard for the new order
