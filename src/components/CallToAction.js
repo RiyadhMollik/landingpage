@@ -79,23 +79,17 @@ export default function CallToAction() {
                   </svg>
                   <span className="text-gray-200">সহজে ব্যবহারযোগ্য</span>
                 </div>
-                <div className="flex items-center">
-                  <svg className="w-6 h-6 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                  </svg>
-                  <span className="text-gray-200">আজীবন অ্যাকসেস</span>
-                </div>
               </div>
             </div>
             
             <div className="mb-10">
               <div className="flex items-center justify-center gap-4">
-                <span className="text-lg line-through text-gray-400">{productDetails.originalPrice}৳</span>
+                <span className="text-lg line-through text-gray-400">15000৳</span>
                 <span className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  {productDetails.currentPrice}৳
+                  {productDetails.price}৳
                 </span>
                 <span className="bg-pink-600 text-white text-sm font-bold px-3 py-1 rounded-full">
-                  {productDetails.discount}% ছাড়
+                 99% ছাড়
                 </span>
               </div>
               <p className="text-gray-400 mt-2 text-sm">* অফার শেষ হবে {productDetails.validUntil}</p>

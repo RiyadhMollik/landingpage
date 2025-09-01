@@ -4,17 +4,16 @@ import Link from 'next/link';
 
 export default function PricingCard() {
   const [product, setProduct] = useState({
-    name: 'সারা বাংলাদেশের মৌজা ম্যাপ',
+    name: 'স্ক্যান হয়ে সার্ভারে আসা সব মৌজা ম্যাপ',
     originalPrice: 15000,
     currentPrice: 200,
     discount: 97,
-    description: 'সারা বাংলাদেশের মৌজা ম্যাপ ডাউনলোড করুন',
+    description: 'স্ক্যান হয়ে সার্ভারে আসা সব মৌজা ম্যাপ',
     features: [
       { title: 'সম্পূর্ণ বাংলাদেশের মৌজা ম্যাপ', icon: 'map' },
       { title: 'উচ্চ রেজুলেশন', icon: 'eye' },
       { title: 'সহজে ব্যবহারযোগ্য', icon: 'device' },
       { title: 'সরাসরি ডাউনলোড', icon: 'download' },
-      { title: 'আজীবন অ্যাকসেস', icon: 'infinity' },
       { title: '২৪/৭ সাপোর্ট', icon: 'support' }
     ]
   });
@@ -119,15 +118,14 @@ export default function PricingCard() {
 
               <div className="relative bg-gray-800 p-8 rounded-2xl">
                 <div className="absolute top-0 right-0 bg-gradient-to-l from-pink-500 to-purple-500 text-white text-sm font-bold px-4 py-1 rounded-bl-lg">
-                  {product.discount}% ছাড়
+                  99% ছাড়
                 </div>
 
                 <h3 className="text-2xl font-bold text-center mb-4 text-white">{product.name}</h3>
 
                 <div className="text-center mb-6">
-                  <span className="text-lg line-through text-gray-400 mr-2">{product.originalPrice}৳</span>
-                  <span className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{product.currentPrice}৳</span>
-                  <p className="text-gray-400 mt-1 text-sm">একবার কিনুন, আজীবন ব্যবহার করুন</p>
+                  <span className="text-lg line-through text-gray-400 mr-2">15000৳</span>
+                  <span className="text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{product.price}৳</span>
                 </div>
 
                 <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 p-4 rounded-lg mb-6">

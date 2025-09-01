@@ -52,7 +52,7 @@ export default function Notification() {
         const hideTimeout = setTimeout(() => {
             setCurrent((prev) => (prev + 1) % notifications.length);
             setVisible(true);
-        }, 20000);
+        }, 10000);
 
         return () => {
             clearTimeout(showTimeout);

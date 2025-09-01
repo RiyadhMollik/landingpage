@@ -40,16 +40,6 @@ export default function FeatureSection() {
       color: "purple"
     },
     {
-      title: "আজীবন অ্যাকসেস",
-      description: "একবার কিনলে আপনি আজীবন আমাদের মৌজা ম্যাপগুলি ব্যবহার করতে পারবেন।",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-        </svg>
-      ),
-      color: "indigo"
-    },
-    {
       title: "২৪/৭ সাপোর্ট",
       description: "আমাদের দক্ষ সাপোর্ট টিম সবসময় আপনাকে সাহায্য করতে প্রস্তুত।",
       icon: (

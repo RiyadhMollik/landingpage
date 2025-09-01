@@ -22,7 +22,7 @@ async function initDatabase() {
     // Create default product
     const product = await db.Product.create({
       name: 'সারা বাংলাদেশের মৌজা ম্যাপ',
-      description: 'বাংলাদেশের সকল জেলার মৌজা ম্যাপ সংগ্রহ করুন',
+      description: 'স্ক্যান হয়ে সার্ভারে আসা সব মৌজা ম্যাপ',
       price: 200.00,
       campaignEndDate: new Date(new Date().setDate(new Date().getDate() + 30)), // 30 days from now
       imageUrl: '/file.svg',

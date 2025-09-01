@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const Countdown = ({ campaignEndDate }) => {
+const Countdown = () => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -13,36 +13,26 @@ const Countdown = ({ campaignEndDate }) => {
   });
 
   useEffect(() => {
-    // Calculate time difference between now and campaign end date
     const calculateTimeLeft = () => {
-      if (!campaignEndDate) return;
-      
       const now = new Date();
-      const endDate = new Date(campaignEndDate);
-      const difference = endDate - now;
-      
-      if (difference <= 0) {
-        // Campaign has ended
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
-      }
-      
-      // Calculate days, hours, minutes, seconds
+      const nextMidnight = new Date();
+      nextMidnight.setHours(24, 0, 0, 0); // next day 00:00 local time
+
+      const difference = nextMidnight - now;
+
       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
       const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-      
+
       setTimeLeft({ days, hours, minutes, seconds });
     };
-    
-    // Initial calculation
-    calculateTimeLeft();
-    
-    // Update every second
+
+    calculateTimeLeft(); // initial calculation
     const timer = setInterval(calculateTimeLeft, 1000);
+
     return () => clearInterval(timer);
-  }, [campaignEndDate]);
+  }, []);
 
   return (
     <div className="flex justify-center gap-2 sm:gap-4 md:gap-6 text-white">
@@ -78,7 +68,7 @@ export default function Banner() {
     reviews: 950,
     rating: 5.0,
   });
-  
+
   useEffect(() => {
     // Fetch the single product
     async function fetchProduct() {
@@ -92,10 +82,10 @@ export default function Banner() {
         if (products && products.length > 0) {
           const product = products[0];
           // Calculate discount percentage
-          const discountPercentage = product.originalPrice > 0 
-            ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
+          const discountPercentage = product.originalPrice > 0
+            ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
             : 0;
-            
+
           setProductDetails({
             ...product,
             currentPrice: product.price,
@@ -106,7 +96,7 @@ export default function Banner() {
         console.error('Error fetching product:', error);
       }
     }
-    
+
     fetchProduct();
   }, []);
 
@@ -121,9 +111,9 @@ export default function Banner() {
           transition={{ duration: 0.6 }}
         >
           <div className="inline-block bg-gradient-to-r from-pink-600 to-purple-600 text-white text-xs sm:text-sm font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-full mb-4 sm:mb-6 shadow-lg">
-            🔥 {productDetails.discount}% ছাড়! সীমিত সময়ের জন্য
+            🔥 99% ছাড়! সীমিত সময়ের জন্য
           </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight bg-gradient-to-r from-white via-gray-100 to-purple-200 bg-clip-text text-transparent truncate">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight bg-gradient-to-r from-white via-gray-100 to-purple-200 bg-clip-text text-transparent ">
             {productDetails.name}
           </h1>
           <p className="text-sm sm:text-base md:text-lg mt-4 sm:mt-6 text-gray-300">
@@ -131,8 +121,8 @@ export default function Banner() {
           </p>
           <div className="mt-4 sm:mt-6">
             <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold">
-              <span className="line-through text-gray-500 text-lg sm:text-xl md:text-2xl">{productDetails.originalPrice}৳</span>{' '}
-              <span className="text-white">মাত্র {productDetails.currentPrice}৳</span>
+              <span className="line-through text-gray-500 text-lg sm:text-xl md:text-2xl">15000৳</span>{' '}
+              <span className="text-white">মাত্র {productDetails.price}৳</span>
             </p>
             <p className="mt-2 sm:mt-3 text-gray-300 text-sm sm:text-base">আজই অর্ডার করুন এবং বিশাল সাশ্রয় করুন!</p>
           </div>

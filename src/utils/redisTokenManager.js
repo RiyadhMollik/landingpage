@@ -46,25 +46,27 @@ export async function getOrFetchToken(tokenKey, fetchTokenFn, expirationSeconds 
       console.log(`Redis not connected, fetching new ${tokenKey} directly`);
       return await fetchTokenFn();
     }
-    
+
     // Check if token exists in Redis
     try {
       const cachedToken = await redisClient.get(tokenKey);
-      
+
       if (cachedToken) {
         console.log(`Using cached ${tokenKey} from Redis`);
-        return cachedToken.token;
+        // If cachedToken is a string, parse it first
+        const tokenObj = typeof cachedToken === "string" ? JSON.parse(cachedToken) : cachedToken;
+        return tokenObj.token; // Return only the token
       }
     } catch (redisError) {
       console.error(`Redis error while getting ${tokenKey}:`, redisError);
       // Continue with fetching a new token
     }
-    
+
     console.log(`No cached ${tokenKey} found, fetching new token`);
-    
+
     // If no cached token, fetch a new one
     const token = await fetchTokenFn();
-    
+
     // Try to store token in Redis with expiration
     try {
       if (isConnected) {
@@ -75,7 +77,7 @@ export async function getOrFetchToken(tokenKey, fetchTokenFn, expirationSeconds 
       console.error(`Redis error while storing ${tokenKey}:`, redisError);
       // Continue with returning the token even if storing fails
     }
-    
+
     return token;
   } catch (error) {
     console.error(`Error in getOrFetchToken for ${tokenKey}:`, error);
@@ -109,7 +111,7 @@ export async function forceRefreshToken(tokenKey, fetchTokenFn, expirationSecond
   try {
     console.log(`Force refreshing ${tokenKey}`);
     const token = await fetchTokenFn();
-    
+
     // Try to store in Redis if connected
     if (isConnected) {
       try {
@@ -119,7 +121,7 @@ export async function forceRefreshToken(tokenKey, fetchTokenFn, expirationSecond
         console.error(`Redis error while storing refreshed ${tokenKey}:`, redisError);
       }
     }
-    
+
     return token;
   } catch (error) {
     console.error(`Error force refreshing ${tokenKey}:`, error);
