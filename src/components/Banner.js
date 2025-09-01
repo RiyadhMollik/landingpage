@@ -143,7 +143,7 @@ export default function Banner() {
           <motion.div className="mt-4 sm:mt-6 flex justify-center lg:justify-start">
             <Link
               href="/purchase"
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-base sm:text-lg md:text-xl py-3 sm:py-4 px-6 sm:px-8 rounded-xl shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
+              className="bg-gradient-to-r animate-bounce from-purple-600 to-indigo-600 text-white font-bold text-base sm:text-lg md:text-xl py-3 sm:py-4 px-6 sm:px-8 rounded-xl shadow-lg hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105"
             >
               মাত্র {productDetails.currentPrice}৳ এখনই কিনুন
             </Link>
