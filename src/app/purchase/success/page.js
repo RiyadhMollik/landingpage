@@ -74,9 +74,9 @@ function PaymentSuccessContent() {
                 আপনার প্রোডাক্ট
               </div>
               <div className="text-sm text-gray-700 mb-1">
-                সারা বাংলাদেশের সকল মোবাইল ম্যাপ
+                স্ক্যান হওয়া ২ লাখ ৫০ হাজার ম্যাপ
               </div>
-              <div className="text-xs text-gray-500">ডিজিটাল প্রোডাক্ট</div>
+              {/* <div className="text-xs text-gray-500">ডিজিটাল প্রোডাক্ট</div> */}
             </div>
 
             {/* Download Section */}

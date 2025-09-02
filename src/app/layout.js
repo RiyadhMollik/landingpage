@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
-import Notification from "@/components/Notification";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "My Digital Product",
+  title: "স্ক্যান হওয়া ২ লাখ ৫০ হাজার ম্যাপ",
   description: "The best solution for your needs.",
 };
 
@@ -51,7 +50,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         {/* End Google Tag Manager (noscript) */}
         <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-        <Notification />
+
       </body>
     </html>
   );
