@@ -80,7 +80,7 @@ export default function CountdownTimer() {
                     আজকের অফার শেষ হতে বাকি
                   </span>
                 </h2>
-                <p className="text-gray-400">99% ছাড় আজ {new Date().toLocaleDateString()} পর্যন্ত</p>
+                <p className="text-gray-400">99% ছাড় আজ  পর্যন্ত</p>
               </div>
               
               <div className="flex flex-wrap justify-center gap-4">

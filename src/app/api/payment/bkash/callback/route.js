@@ -5,11 +5,11 @@ import { getOrFetchToken } from '@/utils/redisTokenManager';
 
 // bKash API configuration
 const bkashConfig = {
-  baseURL: process.env.BKASH_BASE_URL,
-  app_key: process.env.BKASH_APP_KEY,
-  app_secret: process.env.BKASH_APP_SECRET,
-  username: process.env.BKASH_USERNAME,
-  password: process.env.BKASH_PASSWORD
+  baseURL: process.env.NEXT_PUBLIC_BKASH_BASE_URL,
+  app_key: process.env.NEXT_PUBLIC_BKASH_APP_KEY,
+  app_secret: process.env.NEXT_PUBLIC_BKASH_APP_SECRET,
+  username: process.env.NEXT_PUBLIC_BKASH_USERNAME,
+  password: process.env.NEXT_PUBLIC_BKASH_PASSWORD
 };
 
 console.log('bKash callback config:', {

@@ -160,8 +160,6 @@ export default function PricingCard() {
                   <Link href="/purchase" className="block w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white text-center py-4 rounded-lg font-bold text-lg hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/30">
                     মাত্র {product.currentPrice}৳ এখনই কিনুন
                   </Link>
-
-                  <p className="text-center text-sm text-gray-400">* ৭ দিনের মানি ব্যাক গ্যারান্টি</p>
                 </div>
               </div>
             </div>
