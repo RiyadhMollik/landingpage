@@ -52,10 +52,9 @@ export async function getOrFetchToken(tokenKey, fetchTokenFn, expirationSeconds 
       const cachedToken = await redisClient.get(tokenKey);
 
       if (cachedToken) {
-        console.log(cachedToken);
-        console.log(typeof cachedToken);
-        console.log(`Using cached ${tokenKey} from Redis`);
-        return cachedToken; // Return only the token
+        // If cachedToken is a string, parse it first
+        const tokenObj = typeof cachedToken === "string" ? JSON.parse(cachedToken) : cachedToken;
+        return tokenObj.token; // Return only the token
       }
     } catch (redisError) {
       console.error(`Redis error while getting ${tokenKey}:`, redisError);
