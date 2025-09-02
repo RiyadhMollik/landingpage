@@ -61,7 +61,7 @@ export default function PurchasePage() {
         },
         body: JSON.stringify({
           customerName: formData.name,
-          customerAddress: formData.address,
+          customerAddress: 'unknown',
           customerMobile: formData.mobile,
           customerEmail: formData.email,
           productId: 1, // Always use product id 1
@@ -187,7 +187,7 @@ export default function PurchasePage() {
                     required
                   />
                 </div>
-                
+{/*                 
                 <div>
                   <label htmlFor="address" className="block text-gray-700 font-medium mb-2">
                     আপনার ঠিকানা লিখুন <span className="text-red-500">*</span>
@@ -202,7 +202,7 @@ export default function PurchasePage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   />
-                </div>
+                </div> */}
                 
                 <div>
                   <label htmlFor="mobile" className="block text-gray-700 font-medium mb-2">
