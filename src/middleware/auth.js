@@ -10,8 +10,8 @@ exports.authenticate = async (req, res, next) => {
     }
     
     const token = authHeader.split(' ')[1];
-    // Use fallback secret if JWT_SECRET is not set
-    const jwtSecret = process.env.JWT_SECRET || 'fallback_jwt_secret_for_development';
+    // Use fallback secret if NEXT_PUBLIC_JWT_SECRET is not set
+    const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET || 'fallback_NEXT_PUBLIC_JWT_SECRET_for_development';
     const decoded = jwt.verify(token, jwtSecret);
     
     const user = await User.findByPk(decoded.id);

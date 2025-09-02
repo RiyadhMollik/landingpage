@@ -29,7 +29,7 @@ export async function POST(request) {
       );
     }
 
-    const jwtSecret = process.env.JWT_SECRET || 'fallback_jwt_secret_for_development';
+    const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET || 'fallback_NEXT_PUBLIC_JWT_SECRET_for_development';
     const token = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
       jwtSecret,

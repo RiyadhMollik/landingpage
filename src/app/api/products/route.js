@@ -35,7 +35,7 @@ export async function POST(request) {
     }
     
     const token = authHeader.split(' ')[1];
-    const jwtSecret = process.env.JWT_SECRET || 'fallback_jwt_secret_for_development';
+    const jwtSecret = process.env.NEXT_PUBLIC_JWT_SECRET || 'fallback_NEXT_PUBLIC_JWT_SECRET_for_development';
     const decoded = jwt.verify(token, jwtSecret);
     
     // Check if user is admin

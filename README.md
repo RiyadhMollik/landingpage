@@ -44,7 +44,7 @@ DB_PASSWORD=your_db_password
 DB_NAME=bangladesh_maps
 
 # JWT Secret
-JWT_SECRET=your_jwt_secret
+NEXT_PUBLIC_JWT_SECRET=your_NEXT_PUBLIC_JWT_SECRET
 
 # bKash API Credentials
 BKASH_APP_KEY=your_bkash_app_key
