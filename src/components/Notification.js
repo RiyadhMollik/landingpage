@@ -47,11 +47,19 @@ export default function Notification() {
 
     useEffect(() => {
         setVisible(true);
+
         // Hide after 5s
         const showTimeout = setTimeout(() => setVisible(false), 5000);
-        // Show next notification after 10s
+
+        // Show next random notification after 10s
         const nextTimeout = setTimeout(() => {
-            setCurrent((prev) => (prev + 1) % notifications.length);
+            setCurrent(() => {
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * notifications.length);
+                } while (randomIndex === current); // prevent same message twice in a row
+                return randomIndex;
+            });
         }, 10000);
 
         return () => {
