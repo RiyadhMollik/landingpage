@@ -84,7 +84,7 @@ export async function POST(request) {
     };
 
     // Get bKash token
-    const token = await getBkashToken();
+    const token = await fetchNewToken();
     console.log(token);
     
     console.log('Creating payment payload:', {

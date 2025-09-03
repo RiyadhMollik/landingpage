@@ -93,7 +93,7 @@ export async function POST(request) {
     // If payment was successful, execute the payment
     if (status === 'success') {
       // Get bKash token
-      const token = await getBkashToken();
+      const token = await fetchNewToken();
       const executeResponse = await axios.post(
         `${bkashConfig.baseURL}/execute`,
         {
@@ -221,7 +221,7 @@ export async function GET(request) {
     if (status === 'success') {
       try {
         // Get bKash token
-        const token = await getBkashToken();
+        const token = await fetchNewToken();
         const executeResponse = await axios.post(
           `${bkashConfig.baseURL}/execute`,
           {
