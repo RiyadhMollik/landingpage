@@ -2,10 +2,10 @@
 import mysql from 'mysql2/promise';
 import fs from 'fs';
 import path from 'path';
-import { config } from 'dotenv';
+import dotenv from 'dotenv';
 
 // Load environment variables from .env file
-config();
+dotenv.config();
 
 const dbConfig = {
   host: process.env.NEXT_PUBLIC_DB_HOST || process.env.DB_HOST || 'localhost',
