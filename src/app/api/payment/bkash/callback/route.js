@@ -108,13 +108,14 @@ export async function POST(request) {
       // Get bKash token
       const token = await fetchNewToken();
       const executeResponse = await axios.post(
-        `${bkashConfig.baseURL}/payment/execute/${paymentID}`,
-        {},
+        `${bkashConfig.baseURL}/execute`,
+        { paymentID },
         {
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-            'X-APP-Key': bkashConfig.app_key,
+            'content-type': 'application/json',
+            'accept': 'application/json',
+            'authorization': token,
+            'x-app-key': bkashConfig.app_key,
           },
         }
       );
@@ -242,13 +243,14 @@ export async function GET(request) {
         console.log('bKash token obtained:', token);
 
         const executeResponse = await axios.post(
-          `${bkashConfig.baseURL}/payment/execute/${paymentID}`,
-          {},
+          `${bkashConfig.baseURL}/execute`,
+          { paymentID },
           {
             headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-              'X-APP-Key': bkashConfig.app_key,
+              'content-type': 'application/json',
+              'accept': 'application/json',
+              'authorization': token,
+              'x-app-key': bkashConfig.app_key,
             },
           }
         );

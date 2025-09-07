@@ -122,10 +122,11 @@ export async function POST(request) {
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`, // your getBkashToken() result
-          "X-APP-Key": bkashConfig.app_key,
-          "Content-Type": "application/json",
-          Accept: "application/json"
+      // bKash expects the raw id_token (no "Bearer ")
+      authorization: token,
+      "x-app-key": bkashConfig.app_key,
+          "content-type": "application/json",
+          "accept": "application/json"
         }
       }
     );
