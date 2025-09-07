@@ -25,7 +25,7 @@ async function getBkashConfig() {
 // Get bKash auth token with Redis caching
 async function fetchNewToken() {
   const bkashConfig = await getBkashConfig();
-  
+
   console.log('bKash callback config from database:', {
     baseURL: bkashConfig.baseURL,
     app_key: bkashConfig.app_key ? '***' : undefined,
@@ -45,6 +45,7 @@ async function fetchNewToken() {
       'password': bkashConfig.password
     }
   });
+  console.log('bKash Token Response:', response.data);
 
   return response.data.id_token;
 }
@@ -186,7 +187,7 @@ export async function POST(request) {
 export async function GET(request) {
   try {
     const bkashConfig = await getBkashConfig();
-    
+
     // Extract parameters from URL query string
     const url = new URL(request.url);
     const paymentID = url.searchParams.get('paymentID');

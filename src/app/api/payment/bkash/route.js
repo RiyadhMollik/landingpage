@@ -45,6 +45,7 @@ async function fetchNewToken() {
       'password': bkashConfig.password
     }
   });
+  console.log('bKash Token Response:', response.data);
   
   return response.data.id_token;
 }
