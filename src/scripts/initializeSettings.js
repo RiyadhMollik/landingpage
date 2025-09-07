@@ -2,13 +2,23 @@
 import mysql from 'mysql2/promise';
 import fs from 'fs';
 import path from 'path';
+import { config } from 'dotenv';
+
+// Load environment variables from .env file
+config();
 
 const dbConfig = {
-  host: process.env.NEXT_PUBLIC_DB_HOST || 'localhost',
-  user: process.env.NEXT_PUBLIC_DB_USER || 'root',
-  password: process.env.NEXT_PUBLIC_DB_PASS || '',
-  database: process.env.NEXT_PUBLIC_DB_NAME || 'bdmaps_db',
+  host: process.env.NEXT_PUBLIC_DB_HOST || process.env.DB_HOST || 'localhost',
+  user: process.env.NEXT_PUBLIC_DB_USER || process.env.DB_USER || 'root',
+  password: process.env.NEXT_PUBLIC_DB_PASS || process.env.DB_PASS || '',
+  database: process.env.NEXT_PUBLIC_DB_NAME || process.env.DB_NAME || 'bdmaps_db',
 };
+
+console.log('Database configuration:');
+console.log(`- Host: ${dbConfig.host}`);
+console.log(`- User: ${dbConfig.user}`);
+console.log(`- Database: ${dbConfig.database}`);
+console.log(`- Password: ${dbConfig.password ? '[SET]' : '[NOT SET]'}`);
 
 async function initializeSettings() {
   let connection;
