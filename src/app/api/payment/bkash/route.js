@@ -1,27 +1,39 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { getOrFetchToken } from '@/utils/redisTokenManager';
+import SettingsService from '@/services/settingsService';
 // Removed db import for demo mode
 
-// bKash API configuration
-const bkashConfig = {
-  baseURL: process.env.NEXT_PUBLIC_BKASH_BASE_URL,
-  app_key: process.env.NEXT_PUBLIC_BKASH_APP_KEY,
-  app_secret: process.env.NEXT_PUBLIC_BKASH_APP_SECRET,
-  username: process.env.NEXT_PUBLIC_BKASH_USERNAME,
-  password: process.env.NEXT_PUBLIC_BKASH_PASSWORD
-};
-
-console.log('bKash config:', {
-  baseURL: bkashConfig.baseURL,
-  app_key: bkashConfig.app_key ? '***' : undefined,
-  app_secret: bkashConfig.app_secret ? '***' : undefined,
-  username: bkashConfig.username ? '***' : undefined,
-  password: bkashConfig.password ? '***' : undefined
-});
+// Get bKash configuration from database
+async function getBkashConfig() {
+  try {
+    return await SettingsService.getBkashConfig();
+  } catch (error) {
+    console.error('Error getting bKash config from database:', error);
+    // Fallback to environment variables
+    return {
+      baseURL: process.env.NEXT_PUBLIC_BKASH_BASE_URL,
+      app_key: process.env.NEXT_PUBLIC_BKASH_APP_KEY,
+      app_secret: process.env.NEXT_PUBLIC_BKASH_APP_SECRET,
+      username: process.env.NEXT_PUBLIC_BKASH_USERNAME,
+      password: process.env.NEXT_PUBLIC_BKASH_PASSWORD,
+      base_url: process.env.NEXT_PUBLIC_BASE_URL
+    };
+  }
+}
 
 // Function to fetch a new bKash token
 async function fetchNewToken() {
+  const bkashConfig = await getBkashConfig();
+  
+  console.log('bKash config from database:', {
+    baseURL: bkashConfig.baseURL,
+    app_key: bkashConfig.app_key ? '***' : undefined,
+    app_secret: bkashConfig.app_secret ? '***' : undefined,
+    username: bkashConfig.username ? '***' : undefined,
+    password: bkashConfig.password ? '***' : undefined
+  });
+
   const response = await axios.post(`${bkashConfig.baseURL}/token/grant`, {
     app_key: bkashConfig.app_key,
     app_secret: bkashConfig.app_secret
@@ -52,6 +64,7 @@ async function getBkashToken() {
 export async function POST(request) {
   try {
     const orderData = await request.json();
+    const bkashConfig = await getBkashConfig();
     
     // Validate required fields based on Order model
     if (!orderData.customerName || !orderData.customerEmail || !orderData.customerMobile) {
@@ -92,7 +105,7 @@ export async function POST(request) {
       currency: 'BDT',
       intent: 'sale',
       merchantInvoiceNumber: `INV-${order.id}`,
-      callbackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/bkash/callback`,
+      callbackURL: `${bkashConfig.base_url}/api/payment/bkash/callback`,
       payerReference: "BDMouza"
     });
 
@@ -100,7 +113,7 @@ export async function POST(request) {
       `${bkashConfig.baseURL}/create`,
       {
         mode: "0011", // required
-        callbackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment/bkash/callback`,
+        callbackURL: `${bkashConfig.base_url}/api/payment/bkash/callback`,
         amount: Number(order.amount).toFixed(2), // must be string with 2 decimals
         currency: "BDT",
         intent: "sale",
