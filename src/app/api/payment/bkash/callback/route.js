@@ -10,7 +10,6 @@ async function getBkashConfig() {
     return await SettingsService.getBkashConfig();
   } catch (error) {
     console.error('Error getting bKash config from database:', error);
-    // Fallback to environment variables
     return {
       baseURL: process.env.NEXT_PUBLIC_BKASH_BASE_URL,
       app_key: process.env.NEXT_PUBLIC_BKASH_APP_KEY,
