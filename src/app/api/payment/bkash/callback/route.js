@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { getOrFetchToken } from '@/utils/redisTokenManager';
 import SettingsService from '@/services/settingsService';
+import { getAccessToken } from '@/utils/getBkashToken';
 // Removed db import for demo mode
 
 // Get bKash configuration from database
@@ -10,6 +10,7 @@ async function getBkashConfig() {
     return await SettingsService.getBkashConfig();
   } catch (error) {
     console.error('Error getting bKash config from database:', error);
+    // Fallback to environment variables
     return {
       baseURL: process.env.NEXT_PUBLIC_BKASH_BASE_URL,
       app_key: process.env.NEXT_PUBLIC_BKASH_APP_KEY,
@@ -20,52 +21,11 @@ async function getBkashConfig() {
     };
   }
 }
-
-// Get bKash auth token with Redis caching
-async function fetchNewToken() {
-  const bkashConfig = await getBkashConfig();
-
-  console.log('bKash callback config from database:', {
-    baseURL: bkashConfig.baseURL,
-    app_key: bkashConfig.app_key ? '***' : undefined,
-    app_secret: bkashConfig.app_secret ? '***' : undefined,
-    username: bkashConfig.username ? '***' : undefined,
-    password: bkashConfig.password ? '***' : undefined
-  });
-
-  const response = await axios.post(`${bkashConfig.baseURL}/token/grant`, {
-    app_key: bkashConfig.app_key,
-    app_secret: bkashConfig.app_secret
-  }, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'username': bkashConfig.username,
-      'password': bkashConfig.password
-    }
-  });
-  console.log('bKash Token Response:', response.data);
-
-  return response.data.id_token;
-}
-
-// Get bKash auth token with Redis caching
-async function getBkashToken() {
-  try {
-    // Use the utility function to get or fetch token
-    return await getOrFetchToken('bkash_token', fetchNewToken, 3600);
-  } catch (error) {
-    console.error('Error getting bKash token:', error.response?.data || error.message);
-    throw new Error('Failed to get bKash token');
-  }
-}
-
 // Handle bKash payment callback
 export async function POST(request) {
   try {
     const { paymentID, status, merchantInvoiceNumber } = await request.json();
     const bkashConfig = await getBkashConfig();
-
     if (!paymentID) {
       return NextResponse.json(
         { message: 'Payment ID is required' },
@@ -106,7 +66,7 @@ export async function POST(request) {
     // If payment was successful, execute the payment
     if (status === 'success') {
       // Get bKash token
-      const token = await fetchNewToken();
+      const token = await getAccessToken();
       const executeResponse = await axios.post(
         `${bkashConfig.baseURL}/execute`,
         { paymentID },
@@ -239,7 +199,7 @@ export async function GET(request) {
     if (status === 'success') {
       try {
         // Get bKash token
-        const token = await fetchNewToken();
+        const token = await getAccessToken();
         console.log('bKash token obtained:', token);
 
         const executeResponse = await axios.post(
