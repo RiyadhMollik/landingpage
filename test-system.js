@@ -137,7 +137,7 @@ async function runTests() {
     console.log('\nManual Testing Steps:');
     console.log('1. Visit http://localhost:3000 and click "Download Now"');
     console.log('2. Fill out the purchase form and submit');
-    console.log('3. Test bKash payment flow (in sandbox mode)');
+    console.log('3. Test EPS payment flow (in sandbox mode)');
     console.log('4. Check admin dashboard at http://localhost:3000/admin/login');
     
     rl.question('\nPress Enter to stop the server and exit...', () => {

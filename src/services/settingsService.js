@@ -122,32 +122,32 @@ class SettingsService {
   }
 
   /**
-   * Get bKash configuration from database
-   * @returns {Object} bKash configuration object
+   * Get EPS configuration from database
+   * @returns {Object} EPS configuration object
    */
-  static async getBkashConfig() {
+  static async getEpsConfig() {
     try {
       const settings = await this.getAllSettings();
       
       return {
-        baseURL: settings.bkash_base_url || process.env.NEXT_PUBLIC_BKASH_BASE_URL,
-        app_key: settings.bkash_app_key || process.env.NEXT_PUBLIC_BKASH_APP_KEY,
-        app_secret: settings.bkash_app_secret || process.env.NEXT_PUBLIC_BKASH_APP_SECRET,
-        username: settings.bkash_username || process.env.NEXT_PUBLIC_BKASH_USERNAME,
-        password: settings.bkash_password || process.env.NEXT_PUBLIC_BKASH_PASSWORD,
-        base_url: settings.base_url || process.env.NEXT_PUBLIC_BASE_URL
+        username: settings.eps_username || process.env.NEXT_PUBLIC_EPS_USERNAME,
+        password: settings.eps_password || process.env.NEXT_PUBLIC_EPS_PASSWORD,
+        hash_key: settings.eps_hash_key || process.env.NEXT_PUBLIC_EPS_HASH_KEY,
+        merchant_id: settings.eps_merchant_id || process.env.NEXT_PUBLIC_EPS_MERCHANT_ID,
+        store_id: settings.eps_store_id || process.env.NEXT_PUBLIC_EPS_STORE_ID,
+        base_url: settings.eps_base_url || process.env.NEXT_PUBLIC_EPS_BASE_URL || 'https://sandboxpgapi.eps.com.bd/v1'
       };
     } catch (error) {
-      console.error('Error fetching bKash config from database:', error);
+      console.error('Error fetching EPS config from database:', error);
       
       // Fallback to environment variables
       return {
-        baseURL: process.env.NEXT_PUBLIC_BKASH_BASE_URL,
-        app_key: process.env.NEXT_PUBLIC_BKASH_APP_KEY,
-        app_secret: process.env.NEXT_PUBLIC_BKASH_APP_SECRET,
-        username: process.env.NEXT_PUBLIC_BKASH_USERNAME,
-        password: process.env.NEXT_PUBLIC_BKASH_PASSWORD,
-        base_url: process.env.NEXT_PUBLIC_BASE_URL
+        username: process.env.NEXT_PUBLIC_EPS_USERNAME,
+        password: process.env.NEXT_PUBLIC_EPS_PASSWORD,
+        hash_key: process.env.NEXT_PUBLIC_EPS_HASH_KEY,
+        merchant_id: process.env.NEXT_PUBLIC_EPS_MERCHANT_ID,
+        store_id: process.env.NEXT_PUBLIC_EPS_STORE_ID,
+        base_url: process.env.NEXT_PUBLIC_EPS_BASE_URL || 'https://sandboxpgapi.eps.com.bd/v1'
       };
     }
   }

@@ -27,9 +27,27 @@ module.exports = (sequelize, DataTypes) => {
     },
     paymentMethod: {
       type: DataTypes.STRING,
-      defaultValue: 'bKash'
+      defaultValue: 'eps'
     },
     paymentId: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    merchantTransactionId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true
+    },
+    gatewayTransactionId: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    gateway: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: 'eps'
+    },
+    productName: {
       type: DataTypes.STRING,
       allowNull: true
     },

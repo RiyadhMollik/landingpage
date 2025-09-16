@@ -126,11 +126,12 @@ export async function POST(request) {
       include: [{ association: 'product' }]
     });
     
-    // If payment method is bKash, redirect to bKash payment
-    if (createdOrder.paymentMethod === 'bKash') {
+    // If payment method requires gateway redirect
+    if (createdOrder.paymentMethod === 'bKash' || createdOrder.paymentMethod === 'eps') {
       return NextResponse.json({
         ...createdOrder.toJSON(),
-        redirectToBkash: true
+        redirectToBkash: createdOrder.paymentMethod === 'bKash',
+        redirectToPayment: true
       }, { status: 201 });
     }
     

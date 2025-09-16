@@ -128,5 +128,51 @@ export async function forceRefreshToken(tokenKey, fetchTokenFn, expirationSecond
   }
 }
 
+/**
+ * Get value from Redis
+ * @param {string} key - Redis key
+ * @returns {Promise<string|null>} - The value or null if not found
+ */
+export async function redisGet(key) {
+  try {
+    if (!isConnected) {
+      return null;
+    }
+    return await redisClient.get(key);
+  } catch (error) {
+    console.error(`Redis GET error for key ${key}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Set value in Redis with optional expiration
+ * @param {string} key - Redis key
+ * @param {string} value - Value to store
+ * @param {number} expirationSeconds - Optional expiration in seconds
+ * @returns {Promise<boolean>} - Success status
+ */
+export async function redisSet(key, value, expirationSeconds = null) {
+  try {
+    if (!isConnected) {
+      return false;
+    }
+
+    if (expirationSeconds && expirationSeconds > 0) {
+      await redisClient.set(key, value, { EX: expirationSeconds });
+    } else if (expirationSeconds === 0) {
+      // Delete the key
+      await redisClient.del(key);
+    } else {
+      await redisClient.set(key, value);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error(`Redis SET error for key ${key}:`, error);
+    return false;
+  }
+}
+
 // Export the Redis client for direct use if needed
 export { redisClient };

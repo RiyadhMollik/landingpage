@@ -92,7 +92,7 @@ async function initializeSettings() {
     }
     
     console.log('\n🎉 Initialization completed successfully!');
-    console.log('💡 You can now configure bKash settings through your admin panel');
+    console.log('💡 You can now configure EPS payment settings through your admin panel');
     
   } catch (error) {
     console.error('\n❌ Error initializing settings:');

@@ -17,6 +17,7 @@ export default function PurchasePage() {
     email: ''
   });
   const [submitting, setSubmitting] = useState(false);
+  // Removed gateway selection - using EPS only
 
   useEffect(() => {
     // Fetch the single product
@@ -65,7 +66,7 @@ export default function PurchasePage() {
           customerMobile: formData.mobile,
           customerEmail: formData.email,
           productId: 1, // Always use product id 1
-          paymentMethod: 'bKash',
+          paymentMethod: 'eps', // Only EPS payment available
           productName: 'সারা বাংলাদেশের মৌজা ম্যাপ'
         })
       });
@@ -76,15 +77,26 @@ export default function PurchasePage() {
 
       const orderData = await orderResponse.json();
 
-      // Check if we need to redirect to bKash
-      if (orderData.redirectToBkash) {
-        // Then initiate bKash payment
-        const paymentResponse = await fetch('/api/payment/bkash', {
+      // Check if we need to redirect to payment gateway
+      if (orderData.redirectToBkash || orderData.redirectToPayment) {
+        // Only EPS payment gateway is available
+        const paymentEndpoint = '/api/payment/eps';
+
+        // Initiate payment with selected gateway
+        const paymentResponse = await fetch(paymentEndpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(orderData) // Send the complete order data
+          body: JSON.stringify({
+            orderId: orderData.id,
+            customerData: {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.mobile,
+              address: formData.address || 'Dhaka, Bangladesh'
+            }
+          })
         });
 
         if (!paymentResponse.ok) {
@@ -93,8 +105,8 @@ export default function PurchasePage() {
 
         const paymentData = await paymentResponse.json();
 
-        // Redirect to bKash payment URL
-        window.location.href = paymentData.bkashURL;
+        // Redirect to EPS payment gateway
+        window.location.href = paymentData.redirectURL;
       }
 
     } catch (error) {
@@ -217,11 +229,45 @@ export default function PurchasePage() {
                     required
                   />
                 </div>
+                
+                {/* EPS Payment - Only Option Available */}
+                <div>
+                  <label className="block text-gray-700 font-medium mb-4">
+                    পেমেন্ট মেথড <span className="text-red-500">*</span>
+                  </label>
+                  <div className="border border-green-500 bg-green-50 rounded-lg p-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                        <span className="text-white font-bold text-xs">EPS</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-800">
+                          EPS পেমেন্ট গেটওয়ে
+                        </div>
+                        <p className="text-sm text-gray-600">ব্যাংক কার্ড, মোবাইল ব্যাংকিং ও অন্যান্য পেমেন্ট মেথড</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <button
                   type="submit"
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-4 rounded-md transition-colors duration-300 flex justify-center items-center"
+                  disabled={submitting}
+                  className={`w-full font-bold py-4 px-4 rounded-md transition-colors duration-300 flex justify-center items-center bg-green-600 hover:bg-green-700 text-white ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  বিকাশ পেমেন্টের মাধ্যমে পারচেজ সম্পন্ন করুন
+                  {submitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      প্রসেসিং...
+                    </>
+                  ) : (
+                    <>
+                      EPS পেমেন্টের মাধ্যমে পারচেজ সম্পন্ন করুন
+                    </>
+                  )}
                 </button>
               </form>
             </div>

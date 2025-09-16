@@ -1,4 +1,4 @@
-// Initialize settings table with bKash configuration
+// Initialize settings table with EPS configuration
 import mysql from 'mysql2/promise';
 import fs from 'fs';
 import path from 'path';
