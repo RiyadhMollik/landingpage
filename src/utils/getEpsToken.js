@@ -6,9 +6,9 @@ import SettingsService from '../services/settingsService.js';
 
 /**
  * Generate x-hash for EPS API authentication
- * @param {string} data - Data to hash (username or merchantTransactionId)
- * @param {string} hashKey - EPS hash key
- * @returns {string} Base64 encoded HMAC-SHA512 hash
+ * @param {string} data 
+ * @param {string} hashKey 
+ * @returns {string} 
  */
 export function generateEpsHash(data, hashKey) {
   return crypto
@@ -57,7 +57,7 @@ export async function getEpsToken() {
           'x-hash': xHash,
           'Content-Type': 'application/json',
         },
-        timeout: 30000, // 30 second timeout
+        timeout: 30000, 
       }
     );
 
@@ -100,12 +100,9 @@ export async function getEpsToken() {
   }
 }
 
-/**
- * Clear cached EPS token (useful for testing or when token becomes invalid)
- */
 export async function clearEpsToken() {
   try {
-    await redisSet('eps_token', '', 0); // Set empty value with 0 expiry to delete
+    await redisSet('eps_token', '', 0); 
     console.log('EPS token cache cleared');
   } catch (error) {
     console.warn('Warning: Could not clear EPS token cache:', error.message);

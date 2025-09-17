@@ -29,8 +29,8 @@ export async function initializeEpsPayment(orderData, customerData) {
     // Prepare payment payload
     const paymentPayload = {
       storeId: epsConfig.store_id,
-      CustomerOrderId: orderData.id.toString(),
       merchantTransactionId: merchantTransactionId,
+      CustomerOrderId: orderData.id.toString(),
       transactionTypeId: 1, // 1 = Web
       financialEntityId: 0,
       transitionStatusId: 0,
@@ -41,44 +41,36 @@ export async function initializeEpsPayment(orderData, customerData) {
       failUrl: `${epsConfig.base_url.includes('localhost') ? 'http://localhost:3001' : process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com'}/api/payment/eps/callback?status=fail`,
       cancelUrl: `${epsConfig.base_url.includes('localhost') ? 'http://localhost:3001' : process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com'}/api/payment/eps/callback?status=cancel`,
       
-      // Customer information
+      // Customer information (matching EPS API specification)
       customerName: customerData.name || "Customer",
       customerEmail: customerData.email || "customer@example.com",
-      CustomerAddress: customerData.address || "Dhaka, Bangladesh",
-      CustomerAddress2: customerData.address2 || "",
-      CustomerCity: customerData.city || "Dhaka",
-      CustomerState: customerData.state || "Dhaka",
-      CustomerPostcode: customerData.postcode || "1000",
-      CustomerCountry: customerData.country || "BD",
-      CustomerPhone: customerData.phone || "01700000000",
+      customerAddress: customerData.address || "Dhaka, Bangladesh",
+      customerAddress2: customerData.address2 || "",
+      customerCity: customerData.city || "Dhaka",
+      customerState: customerData.state || "Dhaka",
+      customerPostcode: customerData.postcode || "1000",
+      customerCountry: customerData.country || "BD",
+      customerPhone: customerData.phone || "01700000000",
       
-      // Additional required fields
-      PhoneNumber: customerData.phone || "01700000000",
-      Email: customerData.email || "customer@example.com",
-      PostalCode: customerData.postcode || "1000",
-      City: customerData.city || "Dhaka",
-      Country: customerData.country || "BD",
+      // Shipment information (matching EPS API specification)
+      shipmentName: customerData.name || "Customer",
+      shipmentAddress: customerData.address || "Dhaka, Bangladesh",
+      shipmentAddress2: customerData.address2 || "",
+      shipmentCity: customerData.city || "Dhaka",
+      shipmentState: customerData.state || "Dhaka",
+      shipmentPostcode: customerData.postcode || "1000",
+      shipmentCountry: customerData.country || "BD",
       
-      // Shipment information (can be same as customer)
-      ShipmentName: customerData.name || "Customer",
-      ShipmentAddress: customerData.address || "Dhaka, Bangladesh",
-      ShipmentAddress2: customerData.address2 || "",
-      ShipmentCity: customerData.city || "Dhaka",
-      ShipmentState: customerData.state || "Dhaka",
-      ShipmentPostcode: customerData.postcode || "1000",
-      ShipmentCountry: customerData.country || "BD",
-      ShipmentPhone: customerData.phone || "01700000000",
-      
-      // Additional fields
-      ValueA: "",
-      ValueB: "",
-      ValueC: "",
-      ValueD: "",
-      ShippingMethod: "NO",
-      NoOfItem: "1",
-      ProductName: orderData.productName || "Digital Product",
-      ProductProfile: "general",
-      ProductCategory: "Digital",
+      // Additional value fields
+      valueA: "",
+      valueB: "",
+      valueC: "",
+      valueD: "",
+      shippingMethod: "NO",
+      noOfItem: "1",
+      productName: orderData.productName || "Digital Product",
+      productProfile: "general",
+      productCategory: "Digital",
       
       // Product list (can be expanded for multiple items)
       ProductList: [
