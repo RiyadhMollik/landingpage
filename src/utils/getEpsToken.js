@@ -41,6 +41,10 @@ export async function getEpsToken() {
     const xHash = generateEpsHash(epsConfig.username, epsConfig.hash_key);
 
     console.log('Requesting new EPS token...');
+    console.log(`EPS Base URL: ${epsConfig.base_url}`);
+    console.log(`EPS Username: ${epsConfig.username}`);
+    console.log(`EPS Password: ${epsConfig.password}`);
+    console.log(`EPS Hash: ${xHash}`);
     
     const response = await axios.post(
       `${epsConfig.base_url}/Auth/GetToken`,
@@ -58,7 +62,8 @@ export async function getEpsToken() {
     );
 
     const { token, expireDate, errorMessage, errorCode } = response.data;
-
+    console.log('EPS Token Response:', response.data);
+    
     if (errorCode || errorMessage) {
       throw new Error(`EPS Token Error: ${errorMessage || 'Unknown error'} (Code: ${errorCode})`);
     }

@@ -49,8 +49,15 @@ export async function initializeEpsPayment(orderData, customerData) {
       CustomerCity: customerData.city || "Dhaka",
       CustomerState: customerData.state || "Dhaka",
       CustomerPostcode: customerData.postcode || "1000",
-      CustomerCountry: "BD",
+      CustomerCountry: customerData.country || "BD",
       CustomerPhone: customerData.phone || "01700000000",
+      
+      // Additional required fields
+      PhoneNumber: customerData.phone || "01700000000",
+      Email: customerData.email || "customer@example.com",
+      PostalCode: customerData.postcode || "1000",
+      City: customerData.city || "Dhaka",
+      Country: customerData.country || "BD",
       
       // Shipment information (can be same as customer)
       ShipmentName: customerData.name || "Customer",
@@ -59,7 +66,8 @@ export async function initializeEpsPayment(orderData, customerData) {
       ShipmentCity: customerData.city || "Dhaka",
       ShipmentState: customerData.state || "Dhaka",
       ShipmentPostcode: customerData.postcode || "1000",
-      ShipmentCountry: "BD",
+      ShipmentCountry: customerData.country || "BD",
+      ShipmentPhone: customerData.phone || "01700000000",
       
       // Additional fields
       ValueA: "",
