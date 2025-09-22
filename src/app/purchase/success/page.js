@@ -116,11 +116,11 @@ function PaymentSuccessContent() {
             </div>
 
             {/* Important Notice */}
-            <div className="w-full bg-yellow-100 border-l-4 border-yellow-400 text-yellow-900 p-4 rounded-md mb-4 text-sm">
+            {/* <div className="w-full bg-yellow-100 border-l-4 border-yellow-400 text-yellow-900 p-4 rounded-md mb-4 text-sm">
               <div className="font-bold mb-1">গুরুত্বপূর্ণ নির্দেশনা</div>
               ফাইলটি ডাউনলোড করতে হলে প্রথমে উপরের বাটনে ক্লিক - করে ফাইলটি ওপেন করুন। যদি কোনো সমস্যা হয় তাহলে আমাদের সাথে যোগাযোগ করুন। অনুগ্রহ করে অর্ডার আইডি/লেনদেন আইডি এবং মোবাইল নম্বর আমাদেরকে জানান।
               <div className="text-xs text-gray-500 mt-2">প্রয়োজনে নোটিশ আপডেট হতে পারে</div>
-            </div>
+            </div> */}
 
             {/* Order Details */}
             {transactionId && (
@@ -166,16 +166,16 @@ function PaymentSuccessContent() {
                   </svg>
                   WhatsApp
                 </a>
-                <a
+                {/* <a
                   href="tel:+8801338022478"
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-md text-center transition flex items-center justify-center gap-2"
                 >
                   কল করুন
-                </a>
+                </a> */}
               </div>
-              <div className="text-xs text-gray-700 mt-2">
+              {/* <div className="text-xs text-gray-700 mt-2">
                 <span className="font-semibold">+880 1338-022478</span>
-              </div>
+              </div> */}
             </div>
 
             <button

@@ -7,8 +7,12 @@ export default function AdminDashboardPage() {
     totalOrders: 0,
     pendingOrders: 0,
     completedOrders: 0,
-    totalRevenue: 0
+    totalRevenue: 0,
+    orderGrowth: 0,
+    revenueGrowth: 0
   });
+  const [recentOrders, setRecentOrders] = useState([]);
+  const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -21,33 +25,22 @@ export default function AdminDashboardPage() {
       const token = localStorage.getItem('adminToken');
       if (!token) return;
 
-      // Fetch orders for stats calculation
-      const response = await fetch('/api/orders', {
+      // Fetch dashboard statistics from dedicated endpoint
+      const response = await fetch('/api/admin/dashboard', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch orders');
+        throw new Error('Failed to fetch dashboard data');
       }
 
-      const orders = await response.json();
+      const data = await response.json();
       
-      // Calculate stats
-      const totalOrders = orders.length;
-      const pendingOrders = orders.filter(order => order.orderStatus === 'pending').length;
-      const completedOrders = orders.filter(order => order.paymentStatus === 'completed').length;
-      const totalRevenue = orders
-        .filter(order => order.paymentStatus === 'completed')
-        .reduce((sum, order) => sum + parseFloat(order.amount), 0);
-
-      setStats({
-        totalOrders,
-        pendingOrders,
-        completedOrders,
-        totalRevenue
-      });
+      setStats(data.stats);
+      setRecentOrders(data.recentOrders || []);
+      setChartData(data.chartData || []);
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
       setError('Failed to load dashboard data');
@@ -112,6 +105,11 @@ export default function AdminDashboardPage() {
                   <dt className="text-sm font-medium text-gray-500 truncate">Total Orders</dt>
                   <dd className="flex items-baseline">
                     <div className="text-2xl font-semibold text-gray-900">{stats.totalOrders}</div>
+                    {stats.orderGrowth !== 0 && (
+                      <div className={`ml-2 flex items-baseline text-sm font-semibold ${stats.orderGrowth > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {stats.orderGrowth > 0 ? '+' : ''}{stats.orderGrowth}%
+                      </div>
+                    )}
                   </dd>
                 </dl>
               </div>
@@ -174,7 +172,12 @@ export default function AdminDashboardPage() {
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 truncate">Total Revenue</dt>
                   <dd className="flex items-baseline">
-                    <div className="text-2xl font-semibold text-gray-900">{stats.totalRevenue.toFixed(2)}৳</div>
+                    <div className="text-2xl font-semibold text-gray-900">{stats.totalRevenue}৳</div>
+                    {stats.revenueGrowth !== 0 && (
+                      <div className={`ml-2 flex items-baseline text-sm font-semibold ${stats.revenueGrowth > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {stats.revenueGrowth > 0 ? '+' : ''}{stats.revenueGrowth}%
+                      </div>
+                    )}
                   </dd>
                 </dl>
               </div>
@@ -182,6 +185,82 @@ export default function AdminDashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Recent Orders Section */}
+      {recentOrders.length > 0 && (
+        <div className="mt-8">
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg leading-6 font-medium text-gray-900">Recent Orders</h3>
+                  <p className="mt-1 max-w-2xl text-sm text-gray-500">Latest 10 orders from your store.</p>
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  onClick={() => window.location.href = '/admin/orders'}
+                >
+                  View All Orders
+                </button>
+              </div>
+            </div>
+            <div className="overflow-hidden">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Order ID
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Customer
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Amount
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Date
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {recentOrders.slice(0, 5).map((order) => (
+                    <tr key={order.id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        #{order.id}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{order.customerName}</div>
+                        <div className="text-sm text-gray-500">{order.customerEmail}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {order.amount}৳
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          order.paymentStatus === 'completed' 
+                            ? 'bg-green-100 text-green-800' 
+                            : order.paymentStatus === 'pending'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}>
+                          {order.paymentStatus}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="mt-8">
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
