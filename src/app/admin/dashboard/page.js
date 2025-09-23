@@ -49,6 +49,53 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const downloadCompletedOrdersCSV = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+
+      // Fetch all completed orders
+      const response = await fetch('/api/orders?limit=10000&page=1', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      }
+
+      const data = await response.json();
+      const orders = data.orders || data || [];
+      
+      // Filter only completed orders
+      const completedOrders = orders.filter(order => order.paymentStatus === 'completed');
+      
+      // Create CSV content in Google Groups format
+      const csvHeaders = 'Group Email [Required],Member Email,Member Type,Member Role\n';
+      const csvRows = completedOrders.map(order => {
+        return `filesharing@bdmouza.com,${order.customerEmail},USER,MEMBER`;
+      }).join('\n');
+      
+      const csvContent = csvHeaders + csvRows;
+      
+      // Create and download CSV file
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = `google-groups-members-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+      
+    } catch (error) {
+      console.error('Error downloading CSV:', error);
+      setError('Failed to download CSV file');
+    }
+  };
+
   if (loading) {
     return (
       <div className="px-4 sm:px-6 lg:px-8 py-8">
@@ -154,6 +201,18 @@ export default function AdminDashboardPage() {
                     <div className="text-2xl font-semibold text-gray-900">{stats.completedOrders}</div>
                   </dd>
                 </dl>
+                <div className="mt-3">
+                  <button
+                    type="button"
+                    onClick={downloadCompletedOrdersCSV}
+                    className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  >
+                    <svg className="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Download Google Groups CSV
+                  </button>
+                </div>
               </div>
             </div>
           </div>
