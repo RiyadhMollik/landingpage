@@ -60,6 +60,21 @@ export async function GET(request) {
 
           console.log('✅ EPS payment verified and completed');
           console.log('Amount verified:', verificationResult.totalAmount);
+          try {
+            await fetch('https://script.google.com/macros/s/AKfycbxPmItKArXX2pA9ljdreiOKNQbwUIOQRgwwp_FH2-_wZq90K3qZuDN-U4bFU-FRIU_Cfg/exec', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                groupEmail: 'filesharing@bdmouza.com',
+                memberEmail: order.customerEmail,
+                memberType: 'USER',
+                memberRole: 'MEMBER'
+              })
+            });
+            console.log('✅ Google Group add request sent for', order.customerEmail);
+          } catch (err) {
+            console.error('❌ Failed to send Google Group add request:', err);
+          }
         } else {
           console.warn('⚠️ EPS verification failed or status not Success:', verificationResult.status);
           paymentStatus = 'failed';
@@ -98,25 +113,6 @@ export async function GET(request) {
         timestamp: new Date().toISOString()
       })
     });
-
-    if (verificationResult.success && verificationResult.status === 'Success') {
-      try {
-        await fetch('https://script.google.com/macros/s/AKfycbxPmItKArXX2pA9ljdreiOKNQbwUIOQRgwwp_FH2-_wZq90K3qZuDN-U4bFU-FRIU_Cfg/exec', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            groupEmail: 'filesharing@bdmouza.com',
-            memberEmail: order.customerEmail,
-            memberType: 'USER',
-            memberRole: 'MEMBER'
-          })
-        });
-        console.log('✅ Google Group add request sent for', order.customerEmail);
-      } catch (err) {
-        console.error('❌ Failed to send Google Group add request:', err);
-      }
-    }
-
     console.log(`EPS payment ${paymentStatus} for order ${order.id}`);
 
     // Redirect to appropriate page
